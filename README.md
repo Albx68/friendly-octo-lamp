@@ -1,1 +1,1 @@
-# A hobbby project to visualize path finding algorithms
+# A hobby project to visualize path finding algorithms
