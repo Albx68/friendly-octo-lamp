@@ -16,6 +16,7 @@ const Grid = () => {
     const totalNodes = ROW_COUNT * COL_COUNT
     const unitNodeArea = dimension / totalNodes
     const unitNode = Math.round(Math.sqrt(unitNodeArea))
+
     return <div className='flex flex-wrap justify-center items-center'>
         {grid.map((row, rowIdx) => {
             return row.map((col, colIdx) => {
