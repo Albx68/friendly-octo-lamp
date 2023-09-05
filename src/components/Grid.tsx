@@ -16,7 +16,7 @@ const Grid = () => {
     const dimension = windowHeight * windowWidth
     const totalNodes = ROW_COUNT * COL_COUNT
     const unitNodeArea = dimension / totalNodes
-    const unitNode = Math.round(Math.sqrt(unitNodeArea))
+    const unitNode = Math.round(Math.sqrt(unitNodeArea)) - 1
 
     const traverseMatrixDFS = (row: number, col: number): void => {
         // Define the possible moves (up, down, left, right)
@@ -49,7 +49,7 @@ const Grid = () => {
         {grid.map((row, rowIdx) => {
             return row.map((col, colIdx) => {
                 return <motion.div animate={{ backgroundColor: visited[rowIdx][colIdx] ? "#00ff00" : "#eeee" }}
-                    transition={{ delay: 0.01 * colIdx * rowIdx }} style={{ height: unitNode, width: unitNode }} key={`${rowIdx}x${colIdx}`} className={`text-xs text-emerald-700 flex justify-center items-center  border-2 border-emerald-700`}></motion.div>
+                    transition={{ delay: 0.01 * colIdx * rowIdx }} style={{ height: unitNode, width: unitNode }} key={`${rowIdx}x${colIdx}`} className={`text-xs text-emerald-700 flex justify-center items-center  border-emerald-700`}>{rowIdx}{colIdx}</motion.div>
             })
         })}
     </div>
