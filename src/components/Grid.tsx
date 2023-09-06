@@ -19,7 +19,7 @@ const Grid = () => {
     // const totalNodes = ROW_COUNT * COL_COUNT
     // const unitNodeArea = dimension / totalNodes
     // const unitNode = Math.round(Math.sqrt(unitNodeArea)) - 1
-    const unitNode = 80
+    const unitNode = 20
     const traverseMatrixDFS = (row: number, col: number): void => {
         // Define the possible moves (up, down, left, right)
         const rowMoves = [-1, 1, 0, 0];
@@ -63,7 +63,7 @@ const Grid = () => {
                     >
                         <motion.rect
                             initial={{ scale: 0 }}
-                            animate={{ fill: fillColor, scale }}
+                            animate={{ fill: ["#66CCFF", "#CCFFbb", "#CCFF66", fillColor], scale }}
                             transition={{ delay: 0.01 * rowIdx + colIdx * 0.1 }}
                             width={unitNode}
                             height={unitNode}

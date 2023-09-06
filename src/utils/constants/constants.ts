@@ -1,2 +1,2 @@
-export const ROW_COUNT = 20
-export const COL_COUNT = 20
+export const ROW_COUNT = 30
+export const COL_COUNT = 30
