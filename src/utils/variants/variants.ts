@@ -15,7 +15,6 @@ export const popChildrenIn = () => {
         hidden: { scale: 0.7 },
         show: {
             scale: 1,
-
         },
     }
     return { container: container, child: child } as { container: Variants, child: Variants }
