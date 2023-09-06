@@ -18,7 +18,7 @@ const usePathFindingStore = create<usePathFindingStore>()((set) => ({
         return { visitedMatrix: newVisited }
     },
     ),
-    resetVisitedMatrix: () => set(() => ({ visitedMatrix: visitedMatrixInitialVal })),
+    resetVisitedMatrix: () => set(() => ({ visitedMatrix: Array(ROW_COUNT).fill(Array(COL_COUNT).fill(false)) })),
 }))
 
 
