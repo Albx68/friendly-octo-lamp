@@ -12,9 +12,8 @@ import React, { useMemo, useState } from 'react'
 
 const Grid = () => {
     const { height: windowHeight, width: windowWidth } = useWindowDimensions()
-    const { visitedMatrix, setVisitedMatrix, resetVisitedMatrix } = usePathFindingStore(state => state)
-    const grid = useMemo(() => generateGrid(ROW_COUNT, COL_COUNT), [])
-    const [startNode, setStartNode] = useState({ row: 9, col: 9 })
+    const { matrix, setMatrix, resetMatrix, setStartNode, setEndNode } = usePathFindingStore(state => state)
+    const [currentVisitingNode, setCurrentVisitingNode] = useState({ row: 0, col: 0 })
     // const dimension = windowHeight * windowWidth
     // const totalNodes = ROW_COUNT * COL_COUNT
     // const unitNodeArea = dimension / totalNodes
@@ -27,24 +26,29 @@ const Grid = () => {
 
         // Update visited status for the current cell
 
-        setVisitedMatrix(row, col);
+        setCurrentVisitingNode({ row: row, col: col })
+
+        setMatrix(row, col);
 
         // Process the current cell
-        console.log(`Visiting matrix[${row}][${col}]: ${grid[row][col]}`);
 
         // Explore all possible neighbor cells
         for (let i = 0; i < 4; i++) {
             const newRow = row + rowMoves[i];
             const newCol = col + colMoves[i];
 
+            console.log("col row", newCol, newRow)
+
             if (
                 newRow >= 0 && newRow < ROW_COUNT &&
                 newCol >= 0 && newCol < COL_COUNT &&
-                !visitedMatrix[newRow][newCol]
+                !matrix[newRow][newCol].visited
             ) {
                 traverseMatrixDFS(newRow, newCol);
             }
         }
+
+
     };
 
 
@@ -53,21 +57,22 @@ const Grid = () => {
         width={COL_COUNT * unitNode}
         height={ROW_COUNT * unitNode}
     >
-        {grid.map((row, rowIdx) => {
+        {matrix.map((row, rowIdx) => {
             return row.map((col, colIdx) => {
-                const isVisited = visitedMatrix[rowIdx][colIdx];
-                const isStartNode = startNode.row == rowIdx && startNode.col == colIdx
-                const fillColor = isStartNode ? '#CCFFbb' : '#99ff99'
+                const isVisited = matrix[rowIdx][colIdx].visited;
+                const isStartNode = matrix[rowIdx][colIdx].isStartNode
+                const isCurrent = currentVisitingNode.row == rowIdx && currentVisitingNode.col == colIdx
+                const fillColor = isCurrent ? '#9999ff' : '#dd9999'
+                console.log(isVisited, rowIdx, colIdx)
                 const scale = isVisited ? 1 : 0;
-                const distanceFromStart = calculateDistanceFromStartNode(startNode.row, startNode.col, rowIdx, colIdx);
 
                 return (
                     <motion.g key={`${rowIdx}x${colIdx}`}
                     >
                         <motion.rect
-                            initial={{ scale: 0 }}
-                            animate={{ fill: ["#66CCFF", "#CCFFbb", "#CCFF66", fillColor], scale }}
-                            transition={{ delay: 0.1 * distanceFromStart }}
+                            initial={{ scale: 1 }}
+                            animate={{ fill: fillColor, scale }}
+                            transition={{ delay: 0.1 * rowIdx + 0.1 * colIdx, duration: 1 }}
                             width={unitNode}
                             height={unitNode}
                             x={colIdx * unitNode}
@@ -75,7 +80,7 @@ const Grid = () => {
                             fill={fillColor}
                             stroke={"#007700"}
                             className={`text-xs text-emerald-700`}
-                            onClick={() => setStartNode({ row: rowIdx, col: colIdx })}
+                            onClick={() => { }}
                         /> :
                         <motion.rect
                             transition={{ duration: 0.01 * rowIdx * colIdx }}
@@ -88,7 +93,7 @@ const Grid = () => {
                             fillOpacity={isStartNode ? 1 : 0}
                             stroke={"#007700"}
                             className={`text-xs text-emerald-700`}
-                            onClick={() => setStartNode({ row: rowIdx, col: colIdx })}
+                            onClick={() => { }}
 
                         />
                     </motion.g>
@@ -97,8 +102,8 @@ const Grid = () => {
         })}
     </svg>
         <div className='flex gap-4 '>
-            <button className='p-3 rounded-lg bg-emerald-400' onClick={() => traverseMatrixDFS(startNode.row, startNode.col)}>Depth First Search</button>
-            <button className='p-3 rounded-lg bg-emerald-400' onClick={resetVisitedMatrix}>Reset Matrix</button>
+            <button className='p-3 rounded-lg bg-emerald-400' onClick={() => traverseMatrixDFS(2, 2)}>Depth First Search</button>
+            <button className='p-3 rounded-lg bg-emerald-400' onClick={resetMatrix}>Reset Matrix</button>
         </div>
     </div>
 }
